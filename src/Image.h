@@ -75,6 +75,12 @@ public:
 	Image& grayscale_avg();
 	Image& grayscale_lum();
 
+	// Image data and convert to binary
+	Image& ImageBinary();
+	
+	// Change Image Background
+	Image& ImageBackground();
+
 
 	// Parallel
 	Image& grayscale_avg_parallel();

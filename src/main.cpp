@@ -6,9 +6,9 @@
 int main(int argc, char** argv) {
 	Image test("imgs/apple.jpg");
 	Image img("imgs/apple.jpg");
-	test.ImageMirror();
-	test.grayscale_avg_parallel();
-	test.write("imgs/out/applePararell.jpg");
+	//test.ImageMirror();
+	//test.grayscale_avg_parallel();
+	//test.write("imgs/out/applePararell.jpg");
 
 	//// Measure the execution time of grayscale_avg_parallel() method
 	//auto executionTime = test.MeasureExecutionTime([&]() {
@@ -17,13 +17,16 @@ int main(int argc, char** argv) {
 
 	//std::cout << "Grayscale conversion completed in " << executionTime << " seconds." << std::endl;
 
+	// image data and convert to binary
+	test.ImageBackground();
+	test.write("imgs/out/appleBackground.jpg");
 
 	// grayscale
 	img.grayscale_avg();
 	img.flipX();
 	img.flipY();
 
-	img.write("imgs/out/appleflip_y.jpg");
+	//img.write("imgs/out/appleflip_y.jpg");
 	/*
 	
 		Add your own code here to do some cool stuff with images!

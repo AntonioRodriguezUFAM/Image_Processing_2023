@@ -71,7 +71,7 @@ bool Image::write(const char* filename) {
       break;
   }
   if(success != 0) {
-    printf("\e[32mWrote \e[36m%s\e[0m, %d, %d, %d, %zu\n", filename, w, h, channels, size);
+    printf("\e[32; mWrote \e[36m%s\e[0m, %d, %d, %d, %zu\n", filename, w, h, channels, size);
     return true;
   }
   else {
@@ -525,6 +525,48 @@ Image& Image::grayscale_avg() {
 	return *this;
 }
 
+
+// Image data and convert to binary
+Image& Image::ImageBinary() {
+	const int THRESHOLD = 255/1.5;
+	if (channels < 3) {
+		printf("Image %p has less than 3 channels, it is assumed to already be grayscale.", this);
+	}
+	else {
+		for (int i = 0; i < size; i += channels) {
+			// calculate binary value
+			char binaryValue = (data[i] + data[i + 1] + data[i + 2]) / 3 > THRESHOLD ? 255 : 0;
+
+			// write binary value to output file
+			//output.write(&binaryValue, sizeof(binaryValue));
+
+			memset(data + i, binaryValue, 3);
+		}
+	}
+	return *this;
+}
+
+// Change Image Background
+// Change background color to blue while keeping black pixels unchanged
+Image& Image::ImageBackground() {
+	// Pipeline filter
+	ImageMirror();
+	ImageBinary(); // Call ImageBinary() to convert the image to binary
+
+	for (int i = 0; i < size; i += channels) {
+		// Check if the pixel is black
+		if (data[i] == 0 && data[i + 1] == 0 && data[i + 2] == 0) {
+			continue; // Skip black pixels
+		}
+		else {
+			// Change the background to blue
+			data[i] = 0; // Red channel set to 0
+			data[i + 1] = 0; // Green channel set to 0
+			data[i + 2] = 255; // Blue channel set to 255
+		}
+	}
+	return *this;
+}
 
 // 
 Image& Image::grayscale_avg_parallel() {
